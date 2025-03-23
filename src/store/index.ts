@@ -18,3 +18,7 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+/* src/store/index.ts */
+export * from "./slices";
+export * from "./middleware";
+export * from "./hooks";

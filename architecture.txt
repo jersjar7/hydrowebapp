@@ -1,0 +1,409 @@
+hydrowebapp/
+├── public/                                     # Static files
+│   ├── assets/                                 # Static assets
+│   │   ├── images/                             # Static images
+│   │   └── models/                             # 3D models (if needed)
+│   ├── locales/                                # Internationalization files
+│   ├── favicon.ico                             # App favicon
+│   └── manifest.json                           # PWA manifest for offline capabilities
+├── src/                                        # Source code
+│   ├── api/                                    # API services
+│   │   ├── httpClient.ts                       # Base API client
+│   │   ├── calculationService.ts               # Remote calculation service
+│   │   ├── storageService.ts                   # Cloud storage service
+│   │   └── errorHandling/                      # API error handling
+│   │       └── apiErrorHandler.ts              # Unified API error handling
+│   ├── assets/                                 # Application assets
+│   │   ├── images/                             # Image assets
+│   │   ├── icons/                              # Icon assets
+│   │   └── fonts/                              # Custom fonts
+│   ├── components/                             # Reusable UI components
+│   │   ├── ui/                                 # Base UI components
+│   │   │   ├── Button/                         # Button component
+│   │   │   │   ├── Button.tsx                  # Component implementation
+│   │   │   │   ├── Button.module.css           # Component styles
+│   │   │   │   ├── Button.test.tsx             # Component tests
+│   │   │   │   └── index.ts                    # Export file
+│   │   │   ├── Form/                           # Form components
+│   │   │   │   ├── Input/                      # Input component
+│   │   │   │   ├── Select/                     # Select component
+│   │   │   │   ├── Slider/                     # Slider component
+│   │   │   │   ├── RadioGroup/                 # Radio button group
+│   │   │   │   └── Checkbox/                   # Checkbox component
+│   │   │   ├── Layout/                         # Layout components
+│   │   │   ├── Navigation/                     # Navigation components
+│   │   │   ├── Feedback/                       # Feedback components
+│   │   │   └── DataDisplay/                    # Data display components
+│   │   ├── visualization/                      # Visualization components
+│   │   │   ├── Charts/                         # Chart components
+│   │   │   │   ├── LineChart/                  # Line chart
+│   │   │   │   ├── BarChart/                   # Bar chart
+│   │   │   │   └── ScatterPlot/                # Scatter plot
+│   │   │   ├── ThreeD/                         # 3D visualization components
+│   │   │   │   ├── CrossSection/               # Cross-section view
+│   │   │   │   ├── WaterSurface/               # Water surface renderer
+│   │   │   │   ├── TerrainModel/               # Terrain visualization
+│   │   │   │   ├── Fallbacks/                  # Fallback 2D renderers
+│   │   │   │   │   ├── SimplifiedView.tsx      # Simplified view component
+│   │   │   │   │   └── SVGRenderer.tsx         # SVG-based renderer
+│   │   │   │   └── common/                     # Common 3D utilities
+│   │   │   │       ├── Camera.ts               # Camera controls
+│   │   │   │       ├── FeatureDetection.ts     # WebGL capability detection
+│   │   │   │       ├── Lighting.ts             # Lighting setup
+│   │   │   │       ├── Materials.ts            # Material definitions
+│   │   │   │       ├── MemoryManager.ts        # Graphical memory management
+│   │   │   │       ├── ResourceTracker.ts      # WebGL resource tracking
+│   │   │   │       ├── ResourceCleanup.ts      # Automatic resource cleanup
+│   │   │   │       └── WebGLUtils.ts           # WebGL helper functions
+│   │   │   └── Maps/                           # Map visualizations
+│   │   │       ├── BaseMap/                    # Base map component
+│   │   │       ├── FloodMap/                   # Flood mapping
+│   │   │       └── WatershedMap/               # Watershed visualization
+│   │   └── common/                             # Common application components
+│   │       ├── ErrorBoundary/                  # Error boundary component
+│   │       │   ├── ErrorBoundary.tsx           # Error boundary component
+│   │       │   ├── ErrorFallback.tsx           # Fallback UI
+│   │       │   ├── ErrorReporting.ts           # Error reporting service
+│   │       │   └── ErrorRecoveryStrategies.ts  # Error recovery strategies
+│   │       ├── LoadingIndicator/               # Loading indicators
+│   │       ├── Skeleton/                       # Skeleton loaders
+│   │       └── ExportControls/                 # Export functionality UI
+│   ├── config/                                 # App configuration
+│   │   ├── constants.ts                        # Application constants
+│   │   ├── theme.ts                            # Theme configuration
+│   │   ├── units.ts                            # Unit system definitions
+│   │   ├── plugins.ts                          # Plugin configuration
+│   │   ├── csp.ts                              # Content Security Policy
+│   │   ├── featureFlags.ts                     # Feature flags configuration
+│   │   ├── errorHandling.ts                    # Error handling configuration
+│   │   ├── resourceLimits.ts                   # Resource usage limits
+│   │   ├── scalingConfig.ts                    # Application scaling config
+│   │   └── serviceWorker.ts                    # Service worker configuration
+│   ├── core/                                   # Core application functionality
+│   │   ├── module/                             # Module system
+│   │   │   ├── moduleRegistry.ts               # Module registration
+│   │   │   ├── moduleLoader.ts                 # Dynamic module loading
+│   │   │   ├── moduleDiscovery.ts              # Module discovery
+│   │   │   ├── loadingSequencer.ts             # Dependency load sequencer
+│   │   │   ├── dependencyResolver.ts           # Unified dependency management
+│   │   │   └── types.ts                        # Module type definitions
+│   │   ├── plugin/                             # Plugin system
+│   │   │   ├── pluginRegistry.ts               # Plugin registration
+│   │   │   ├── pluginLoader.ts                 # Plugin loading
+│   │   │   ├── pluginAPI.ts                    # API exposed to plugins
+│   │   │   ├── pluginSandbox.ts                # Security sandbox for plugins
+│   │   │   ├── pluginSecurity.ts               # Unified plugin security
+│   │   │   ├── pluginVersionManager.ts         # Version compatibility
+│   │   │   ├── pluginIntegrationPoints.ts      # Well-defined integration points
+│   │   │   └── pluginMigration.ts              # Plugin data migrations
+│   │   ├── computation/                        # Core computation engine
+│   │   │   ├── taskManager.ts                  # Computation task management
+│   │   │   ├── workerPool.ts                   # Worker thread pool
+│   │   │   ├── computationScheduler.ts         # Scheduling algorithm
+│   │   │   ├── workerManagement.ts             # Unified worker management
+│   │   │   ├── resultCache.ts                  # Calculation result caching
+│   │   │   ├── fallbackComputation.ts          # Main thread fallback
+│   │   │   ├── computationVersioning.ts        # Computation versioning
+│   │   │   ├── computationRecovery.ts          # Recovery from failed calculations
+│   │   │   ├── cloudOffloading.ts              # Cloud computation offloading
+│   │   │   └── resourceMonitor.ts              # Browser resource monitor
+│   │   ├── messaging/                          # Messaging system
+│   │   │   ├── messageQueue.ts                 # Ordered message queue
+│   │   │   ├── messageProcessor.ts             # Message processing
+│   │   │   ├── messageCoordinator.ts           # Unified message coordination
+│   │   │   └── types.ts                        # Message type definitions
+│   │   ├── state/                              # Core state management
+│   │   │   ├── globalState.ts                  # Global state store
+│   │   │   ├── stateAccess.ts                  # State access controls
+│   │   │   ├── stateSync.ts                    # State synchronization
+│   │   │   ├── reduxIntegration.ts             # Redux integration
+│   │   │   ├── moduleStateRegistry.ts          # Registry for feature module states
+│   │   │   └── stateValidator.ts               # State validation
+│   │   ├── logging/                            # Logging infrastructure
+│   │   │   ├── logger.ts                       # Logger implementation
+│   │   │   ├── telemetry.ts                    # Telemetry service
+│   │   │   ├── monitoring.ts                   # Unified monitoring system
+│   │   │   └── logConfig.ts                    # Logging configuration
+│   │   ├── persistence/                        # Data persistence
+│   │   │   ├── projectManager.ts               # Project management
+│   │   │   ├── storageAdapter.ts               # Storage abstraction
+│   │   │   ├── exportManager.ts                # Export functionality
+│   │   │   ├── schemaVersionManager.ts         # Schema version management
+│   │   │   ├── dataMigration.ts                # Data migration system
+│   │   │   └── dataRecovery.ts                 # Data recovery
+│   │   └── error/                              # Unified error handling
+│   │       ├── errorRegistry.ts                # Centralized error registry
+│   │       ├── errorReporter.ts                # Error reporting service
+│   │       ├── errorRecovery.ts                # Centralized recovery strategies
+│   │       ├── errorClassification.ts          # Error classification system
+│   │       └── errorBoundaries.ts              # Error boundary connectors
+│   ├── features/                               # Feature-based modules
+│   │   ├── hydraulics/                         # Hydraulic analysis features
+│   │   │   ├── openChannel/                    # Open channel module
+│   │   │   │   ├── components/                 # Module-specific components
+│   │   │   │   │   ├── ChannelForm/            # Channel input form
+│   │   │   │   │   │   ├── ChannelForm.tsx     # Form component
+│   │   │   │   │   │   ├── GeometryInputs.tsx  # Geometry inputs
+│   │   │   │   │   │   └── ...                 # Other form components
+│   │   │   │   │   ├── Results/                # Results display
+│   │   │   │   │   └── Visualization/          # Visualizations
+│   │   │   │   ├── services/                   # Module-specific services
+│   │   │   │   │   ├── calculationService.ts   # Calculation orchestration
+│   │   │   │   │   └── validationService.ts    # Input validation
+│   │   │   │   ├── workers/                    # Web Workers
+│   │   │   │   │   ├── profileWorker.ts        # Profile calculation worker
+│   │   │   │   │   ├── workerMessageTypes.ts   # Type-safe messaging
+│   │   │   │   │   ├── workerErrorHandling.ts  # Worker error handling
+│   │   │   │   │   └── visualizationWorker.ts  # Visualization worker
+│   │   │   │   ├── store/                      # Module state management
+│   │   │   │   │   ├── channelSlice.ts         # State slice
+│   │   │   │   │   ├── selectors.ts            # State selectors
+│   │   │   │   │   ├── stateExport.ts          # State export for sharing
+│   │   │   │   │   └── stateAccess.ts          # State access controls
+│   │   │   │   ├── utils/                      # Utility functions
+│   │   │   │   │   ├── hydraulics/             # Hydraulic calculations
+│   │   │   │   │   │   ├── channelGeometry.ts  # Geometry calculations
+│   │   │   │   │   │   ├── flowParameters.ts   # Flow parameters
+│   │   │   │   │   │   ├── standardStep/       # Standard step method
+│   │   │   │   │   │   │   ├── coreCalculator.ts # Core algorithm
+│   │   │   │   │   │   │   └── ...            # Other calculation modules
+│   │   │   │   │   │   └── hydraulicJump.ts    # Jump calculations
+│   │   │   │   │   └── unitConversion.ts       # Unit conversion
+│   │   │   │   ├── errors/                     # Feature-specific error handling
+│   │   │   │   │   ├── calculationErrors.ts    # Calculation error handlers
+│   │   │   │   │   └── visualizationErrors.ts  # Visualization error handlers
+│   │   │   │   └── index.ts                    # Module entry point
+│   │   │   ├── culverts/                       # Culvert analysis module
+│   │   │   ├── bridges/                        # Bridge hydraulics module
+│   │   │   ├── stormwater/                     # Stormwater systems module
+│   │   │   ├── dams/                           # Dam and spillway module
+│   │   │   ├── pumps/                          # Pump station module
+│   │   │   └── sediment/                       # Sediment transport module
+│   │   ├── hydrology/                          # Hydrological analysis features
+│   │   │   ├── rainfallRunoff/                 # Rainfall-runoff module
+│   │   │   ├── hydrographs/                    # Hydrograph module
+│   │   │   ├── frequencyAnalysis/              # Frequency analysis module
+│   │   │   ├── watershed/                      # Watershed delineation
+│   │   │   ├── lowFlow/                        # Low flow analysis
+│   │   │   └── waterQuality/                   # Water quality module
+│   │   └── shared/                             # Shared functionality
+│   │       ├── projectManagement/              # Project management
+│   │       ├── reporting/                      # Report generation
+│   │       ├── dataImport/                     # Data import functionality
+│   │       └── errorPatterns/                  # Shared error handling
+│   │           ├── commonErrors.ts             # Common error patterns
+│   │           └── recoveryStrategies.ts       # Shared recovery strategies
+│   ├── hooks/                                  # Custom React hooks
+│   │   ├── ui/                                 # UI-related hooks
+│   │   │   ├── useMediaQuery.ts                # Responsive design hook
+│   │   │   ├── useOutsideClick.ts              # Click outside detection
+│   │   │   ├── useTheme.ts                     # Theme management
+│   │   │   └── useResizeObserver.ts            # Element resizing
+│   │   ├── data/                               # Data-related hooks
+│   │   │   ├── useLocalStorage.ts              # Local storage hook
+│   │   │   └── useSessionStorage.ts            # Session storage hook
+│   │   ├── performance/                        # Performance hooks
+│   │   |   ├── useDebounce.ts                  # Debounce hook
+│   │   |   ├── useThrottle.ts                  # Throttle hook
+│   │   |   └── useMemoizedCalculation.ts       # Calculation memoization
+│   │   └── errors/                             # Error handling hooks
+│   │       ├── useErrorBoundary.ts             # Error boundary hook
+│   │       ├── useErrorRecovery.ts             # Error recovery hook
+│   │       └── useConsistentErrors.ts          # Consistent error handling
+│   ├── layouts/                                # Page layouts
+│   │   ├── MainLayout/                         # Main application layout
+│   │   ├── CalculatorLayout/                   # Calculator-specific layout
+│   │   └── ReportLayout/                       # Report layout
+│   ├── pages/                                  # Page components
+│   │   ├── HomePage/                           # Home page
+│   │   ├── ProjectsPage/                       # Projects page
+│   │   ├── CalculatorPage/                     # Calculator page
+│   │   ├── ResultsPage/                        # Results page
+│   │   ├── DocumentationPage/                  # Documentation page
+│   │   ├── SettingsPage/                       # Settings page
+│   │   └── ErrorPage/                          # Error page
+│   ├── routes/                                 # Routing configuration
+│   │   ├── AppRoutes.tsx                       # Main routes configuration
+│   │   ├── lazyRoutes.ts                       # Lazy-loaded routes
+│   │   ├── routeSplitting.ts                   # Code splitting configuration
+│   │   └── routeErrorBoundary.ts               # Route error handling
+│   ├── services/                               # Application services
+│   │   ├── calculation/                        # Calculation services
+│   │   │   ├── calculationOrchestrator.ts      # Orchestrates calculation flow
+│   │   │   ├── resultProcessor.ts              # Process calculation results
+│   │   │   └── calculationSync.ts              # Calculation synchronization
+│   │   ├── caching/                            # Caching services
+│   │   │   ├── calculationCache.ts             # Calculation caching
+│   │   │   ├── assetCache.ts                   # Asset caching
+│   │   │   ├── persistentCache.ts              # IndexedDB-based cache
+│   │   │   ├── cacheManager.ts                 # Unified cache management
+│   │   │   └── cacheMigration.ts               # Cache migration system
+│   │   ├── export/                             # Export services
+│   │   │   ├── exportToCsv.ts                  # CSV export
+│   │   │   ├── exportToJson.ts                 # JSON export
+│   │   │   ├── exportToPdf.ts                  # PDF export
+│   │   │   └── reportGenerator.ts              # Report generation
+│   │   ├── storage/                            # Storage services
+│   │   │   ├── localStorageService.ts          # LocalStorage wrapper
+│   │   │   ├── indexedDBService.ts             # IndexedDB for large data
+│   │   │   ├── cloudStorageService.ts          # Cloud storage integration
+│   │   │   ├── storageQuotaManager.ts          # Storage quota management
+│   │   │   └── storageRecovery.ts              # Storage error recovery
+│   │   ├── notifications/                      # Notification services
+│   │   │   ├── notificationManager.ts          # Notification management
+│   │   │   └── toastService.ts                 # Toast notifications
+│   │   ├── diagnostics/                        # Diagnostic services
+│   │   │   ├── performanceTracing.ts           # Performance tracing
+│   │   │   ├── memoryProfiling.ts              # Memory profiling
+│   │   │   ├── calculationDiagnostics.ts       # Calculation diagnostics
+│   │   │   ├── executionTimeline.ts            # Execution timeline
+│   │   │   └── diagnosticModeManager.ts        # Toggle diagnostic impact
+│   │   ├── scaling/                            # Scaling services
+│   │   │   ├── loadBalancer.ts                 # Client-side load balancing
+│   │   │   ├── resourceAdaptation.ts           # Adapt to available resources
+│   │   │   └── progressiveDegradation.ts       # Graceful feature degradation
+│   │   └── serviceWorker/                      # Service worker services
+│   │       ├── registration.ts                 # Register service worker
+│   │       ├── cacheStrategies.ts              # Cache strategies
+│   │       └── offlineMode.ts                  # Offline functionality
+│   ├── store/                                  # State management
+│   │   ├── index.ts                            # Store configuration
+│   │   ├── hooks.ts                            # Custom hooks for store
+│   │   ├── middleware/                         # Redux middleware
+│   │   │   ├── loggerMiddleware.ts             # Logging middleware
+│   │   │   ├── moduleMiddleware.ts             # Cross-module state
+│   │   │   ├── persistMiddleware.ts            # Persistence middleware
+│   │   │   └── validationMiddleware.ts         # State validation
+│   │   └── slices/                             # Redux slices
+│   │       ├── uiSlice.ts                      # UI state
+│   │       ├── appSlice.ts                     # Application state
+│   │       ├── projectSlice.ts                 # Project state
+│   │       └── userSlice.ts                    # User preferences
+│   ├── styles/                                 # Global styles
+│   │   ├── theme/                              # Theme system
+│   │   │   ├── tokens.css                      # Design tokens
+│   │   │   ├── lightTheme.css                  # Light theme
+│   │   │   └── darkTheme.css                   # Dark theme
+│   │   ├── base/                               # Base styles
+│   │   ├── mixins/                             # Style mixins
+│   │   └── utilities/                          # Utility classes
+│   ├── types/                                  # TypeScript type definitions
+│   │   ├── common.ts                           # Common types
+│   │   ├── hydraulics.ts                       # Hydraulics types
+│   │   ├── hydrology.ts                        # Hydrology types
+│   │   ├── workers.ts                          # Worker message types
+│   │   ├── errors.ts                           # Error types
+│   │   └── api.ts                              # API types
+│   ├── utils/                                  # Utility functions
+│   │   ├── formatting/                         # Formatting utilities
+│   │   ├── validation/                         # Validation utilities
+│   │   ├── performance/                        # Performance utilities
+│   │   │   ├── memoization.ts                  # Memoization helpers
+│   │   │   ├── chunking.ts                     # Task chunking
+│   │   │   ├── throttling.ts                   # Throttling utilities
+│   │   │   ├── memoryManagement.ts             # Memory management
+│   │   │   └── resourceDetection.ts            # Browser resource detection
+│   │   ├── math/                               # Mathematical utilities
+│   │   │   ├── interpolation.ts                # Interpolation functions
+│   │   │   ├── statistics.ts                   # Statistical functions
+│   │   │   └── numericalMethods.ts             # Numerical methods
+│   │   ├── geometry/                           # Geometric utilities
+│   │   │   ├── meshGeneration.ts               # 3D mesh generation
+│   │   │   ├── spatialOperations.ts            # Spatial calculations
+│   │   │   └── coordinateTransforms.ts         # Coordinate transformations
+│   │   ├── webgl/                              # WebGL utilities
+│   │   │   ├── shaders/                        # Custom shader implementations
+│   │   │   ├── geometryUtils.ts                # Geometry helper functions
+│   │   │   ├── renderingOptimizers.ts          # Rendering optimizations
+│   │   │   ├── memoryOptimizers.ts             # Memory optimization
+│   │   │   ├── fallbackRendering.ts            # Fallback rendering
+│   │   │   └── resourceManager.ts              # Unified WebGL resource manager
+│   │   └── errors/                             # Error handling utilities
+│   │       ├── errorConnectors.ts              # Connect to core error system
+│   │       └── errorHandling.ts                # Common error handling patterns
+│   ├── webWorkers/                             # Web Worker definitions
+│   │   ├── workerRegistry.ts                   # Central worker registry
+│   │   ├── hydraulics/                         # Hydraulic calculation workers
+│   │   │   ├── openChannelWorker.ts            # Open channel worker
+│   │   │   ├── culvertWorker.ts                # Culvert calculation worker
+│   │   │   └── ...                             # Other hydraulic workers
+│   │   ├── hydrology/                          # Hydrological calculation workers
+│   │   │   ├── rainfallRunoffWorker.ts         # Rainfall-runoff worker
+│   │   │   ├── hydrographWorker.ts             # Hydrograph worker
+│   │   │   └── ...                             # Other hydrology workers
+│   │   ├── visualization/                      # Visualization workers
+│   │   │   ├── meshGenerationWorker.ts         # 3D mesh generation worker
+│   │   │   └── dataProcessingWorker.ts         # Data processing worker
+│   │   └── shared/                             # Shared worker utilities
+│   │       ├── workerBootstrap.ts              # Worker initialization
+│   │       ├── workerUtils.ts                  # Unified worker utilities
+│   │       ├── workerMessageTypes.ts           # Type definitions
+│   │       └── workerResourceMonitor.ts        # Worker resource usage
+│   ├── debug/                                  # Debug utilities
+│   │   ├── LogViewer.tsx                       # Log viewer component
+│   │   ├── PerformanceMonitor.tsx              # Performance monitor
+│   │   ├── StateInspector.tsx                  # State inspection tool
+│   │   ├── WorkerDebugger.tsx                  # Worker debugging tool
+│   │   ├── DebugToggle.tsx                     # Debug mode toggle
+│   │   └── PerformanceImpactMonitor.tsx        # Monitor debug impact
+│   ├── App.tsx                                 # Main app component
+│   ├── index.css                               # Global CSS
+│   └── main.tsx                                # Entry point
+├── tests/                                      # Test files
+│   ├── unit/                                   # Unit tests
+│   ├── integration/                            # Integration tests
+│   ├── e2e/                                    # End-to-end tests
+│   ├── performance/                            # Performance tests
+│   │   ├── computation/                        # Computation benchmarks
+│   │   ├── rendering/                          # Rendering benchmarks
+│   │   └── load/                               # Load tests
+│   ├── workers/                                # Worker tests
+│   │   ├── workerTestHarness.ts                # Worker test utilities
+│   │   └── worker-tests/                       # Worker-specific tests
+│   ├── accessibility/                          # Accessibility tests
+│   │   ├── a11yTests.ts                        # Accessibility test suite
+│   │   └── a11yTestUtils.ts                    # Accessibility test utilities
+│   └── network/                                # Network condition tests
+│       ├── networkSimulator.ts                 # Network condition simulator
+│       └── slowNetworkTests.ts                 # Slow network tests
+├── docs/                                       # Documentation
+│   ├── architecture/                           # Architecture documentation
+│   ├── algorithms/                             # Engineering algorithm documentation
+│   ├── extension/                              # Extension development guides
+│   └── api/                                    # API documentation
+├── .github/                                    # GitHub configuration
+│   ├── workflows/                              # GitHub Actions workflows
+│   │   ├── ci.yml                              # CI workflow
+│   │   ├── preview-deploy.yml                  # Preview deployment
+│   │   └── release.yml                         # Release workflow
+│   └── dependabot.yml                          # Dependabot configuration
+├── deployment/                                 # Deployment configuration
+│   ├── environments/                           # Environment configurations
+│   │   ├── development.env                     # Development environment
+│   │   ├── staging.env                         # Staging environment
+│   │   └── production.env                      # Production environment
+│   ├── scaling/                                # Scaling configuration
+│   │   ├── auto-scaling.yml                    # Auto-scaling rules
+│   │   └── load-balancing.yml                  # Load balancing configuration
+│   ├── database/                               # Database configurations
+│   │   ├── schemas/                            # Database schemas
+│   │   └── migrations/                         # Database migrations
+│   └── scripts/                                # Deployment scripts
+│       ├── deploy.sh                           # Deployment script
+│       ├── rollback.sh                         # Rollback script
+│       └── data-migration.sh                   # Data migration script
+├── scripts/                                    # Development scripts
+│   ├── analyze-bundle.js                       # Bundle analyzer
+│   ├── generate-module.js                      # Module generator 
+│   └── benchmark.js                            # Benchmarking tool 
+├── .eslintrc.js                                # ESLint config
+├── .gitignore                                  # Git ignore file
+├── index.html                                  # HTML template
+├── package.json                                # Dependencies
+├── README.md                                   # Documentation
+├── CHANGELOG.md                                # Change log 
+├── CONTRIBUTING.md                             # Contribution guidelines 
+├── tailwind.config.js                          # Tailwind CSS config
+├── tsconfig.json                               # TypeScript config
+├── vite.config.ts                              # Vite config
+└── postcss.config.js                           # PostCSS config
