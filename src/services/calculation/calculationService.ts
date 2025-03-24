@@ -1,5 +1,5 @@
 // src/services/calculation/calculationService.ts
-import { CalculationOrchestrator } from '../../core/computation/calculationOrchestrator';
+import { CalculationOrchestrator } from './calculationOrchestrator';
 
 export interface CalculationOptions {
   useCache?: boolean;

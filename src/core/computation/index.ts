@@ -3,7 +3,6 @@ export * from "./taskManager";
 export * from "./workerPool";
 export * from "./computationScheduler";
 export * from "./resultCache";
-export * from "./calculationOrchestrator";
 
 // The following exports will be uncommented when implementations are available
 // export * from "./cloudOffloading";
