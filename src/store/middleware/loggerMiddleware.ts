@@ -1,13 +1,24 @@
-import { Middleware } from 'redux';
+import { Middleware, Action } from 'redux';
 
-export const loggerMiddleware: Middleware = (store) => (next) => (action) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.group(action.type);
-    console.info('dispatching', action);
-    const result = next(action);
-    console.log('next state', store.getState());
-    console.groupEnd();
-    return result;
-  }
-  return next(action);
-};
+interface LoggerAction extends Action {
+  type: string;
+  [key: string]: any;
+}
+
+export const loggerMiddleware: Middleware = 
+  (store) => 
+  (next) => 
+  (action: unknown) => {
+    // Type assertion to work with the action
+    const typedAction = action as LoggerAction;
+    
+    if (process.env.NODE_ENV !== 'production') {
+      console.group(typedAction.type);
+      console.info('dispatching', typedAction);
+      const result = next(action);
+      console.log('next state', store.getState());
+      console.groupEnd();
+      return result;
+    }
+    return next(action);
+  };

@@ -1,6 +1,7 @@
+// src/store/slices/appSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface AppState {
+export interface AppState {
   loading: boolean;
   appVersion: string;
   initialized: boolean;

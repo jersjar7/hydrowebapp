@@ -6,7 +6,7 @@ interface UserPreferences {
   autoSave: boolean;
 }
 
-interface UserState {
+export interface UserState {
   preferences: UserPreferences;
 }
 
