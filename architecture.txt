@@ -97,6 +97,7 @@ hydrowebapp/
 │   │   │   ├── pluginIntegrationPoints.ts      # Well-defined integration points
 │   │   │   └── pluginMigration.ts              # Plugin data migrations
 │   │   ├── computation/                        # Core computation engine
+│   │   │   ├── calculationOrchestrator.ts      # Separation of concerns
 │   │   │   ├── taskManager.ts                  # Computation task management
 │   │   │   ├── workerPool.ts                   # Worker thread pool
 │   │   │   ├── computationScheduler.ts         # Scheduling algorithm
@@ -106,7 +107,8 @@ hydrowebapp/
 │   │   │   ├── computationVersioning.ts        # Computation versioning
 │   │   │   ├── computationRecovery.ts          # Recovery from failed calculations
 │   │   │   ├── cloudOffloading.ts              # Cloud computation offloading
-│   │   │   └── resourceMonitor.ts              # Browser resource monitor
+│   │   │   ├── resourceMonitor.ts              # Browser resource monitor
+│   │   │   └── index.ts                        # index
 │   │   ├── messaging/                          # Messaging system
 │   │   │   ├── messageQueue.ts                 # Ordered message queue
 │   │   │   ├── messageProcessor.ts             # Message processing

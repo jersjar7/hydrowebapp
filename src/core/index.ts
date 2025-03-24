@@ -6,3 +6,4 @@ export * from "./state";
 export * from "./logging";
 export * from "./persistence";
 export * from "./error";
+export * from "./worker/workerTypes";

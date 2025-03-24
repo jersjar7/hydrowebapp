@@ -1,35 +1,32 @@
-// src/core/computation/workerPool.ts
+// src/core/worker/WorkerPool.ts
 import { v4 as uuidv4 } from 'uuid';
-import { WorkerMessage } from '..//';
+import { WorkerMessage, TaskPromise } from './workerTypes';
 
-interface TaskPromise {
-  resolve: (value: any) => void;
-  reject: (error: any) => void;
-  priority: 'high' | 'normal' | 'low';
-}
-
-export const workerPool = {
-  workers: [] as Worker[],
-  availableWorkers: [] as Worker[],
-  taskQueue: new Map<string, TaskPromise>(),
+export class WorkerPool {
+  private workers: Worker[] = [];
+  private availableWorkers: Worker[] = [];
+  private taskQueue: Map<string, TaskPromise> = new Map();
   
-  initialize(workerScript: string, poolSize: number = navigator.hardwareConcurrency || 4) {
-    // Clean up any existing workers
-    this.terminate();
-    
-    // Create new workers
-    for (let i = 0; i < poolSize; i++) {
-      const worker = new Worker(new URL(`../../webWorkers/${workerScript}.ts`, import.meta.url), { type: 'module' });
+  constructor(
+    private workerScript: string,
+    private poolSize: number = navigator.hardwareConcurrency || 4
+  ) {
+    this.initialize();
+  }
+  
+  private initialize() {
+    for (let i = 0; i < this.poolSize; i++) {
+      const worker = new Worker(new URL(`../../webWorkers/${this.workerScript}.ts`, import.meta.url), { type: 'module' });
       
-      worker.onmessage = (event) => this.handleWorkerMessage(worker, event);
-      worker.onerror = (error) => this.handleWorkerError(worker, error);
+      worker.onmessage = this.handleWorkerMessage.bind(this, worker);
+      worker.onerror = this.handleWorkerError.bind(this, worker);
       
       this.workers.push(worker);
       this.availableWorkers.push(worker);
     }
-  },
+  }
   
-  handleWorkerMessage(worker: Worker, event: MessageEvent<WorkerMessage>) {
+  private handleWorkerMessage(worker: Worker, event: MessageEvent<WorkerMessage>) {
     const { taskId, type, payload } = event.data;
     
     if (type === 'RESULT' || type === 'ERROR') {
@@ -47,24 +44,23 @@ export const workerPool = {
       
       this.processNextTask();
     }
-  },
+  }
   
-  handleWorkerError(worker: Worker, error: ErrorEvent) {
+  private handleWorkerError(worker: Worker, error: ErrorEvent) {
     console.error('Worker error:', error);
     // Replace the failed worker
     const index = this.workers.indexOf(worker);
     if (index !== -1) {
       this.workers.splice(index, 1);
-      const workerScript = worker.constructor.toString().match(/new Worker\(.*?([^\/]+\.ts)/)?.[1] || 'calculationWorker.ts';
-      const newWorker = new Worker(new URL(`../../webWorkers/${workerScript}`, import.meta.url), { type: 'module' });
-      newWorker.onmessage = (event) => this.handleWorkerMessage(newWorker, event);
-      newWorker.onerror = (error) => this.handleWorkerError(newWorker, error);
+      const newWorker = new Worker(new URL(`../../webWorkers/${this.workerScript}.ts`, import.meta.url), { type: 'module' });
+      newWorker.onmessage = this.handleWorkerMessage.bind(this, newWorker);
+      newWorker.onerror = this.handleWorkerError.bind(this, newWorker);
       this.workers.push(newWorker);
       this.availableWorkers.push(newWorker);
     }
-  },
+  }
   
-  executeTask<T>(taskType: string, payload: any, priority: 'high' | 'normal' | 'low' = 'normal'): Promise<T> {
+  public executeTask<T>(taskType: string, payload: any, priority: 'high' | 'normal' | 'low' = 'normal'): Promise<T> {
     return new Promise((resolve, reject) => {
       const taskId = uuidv4();
       
@@ -74,9 +70,9 @@ export const workerPool = {
         this.processNextTask();
       }
     });
-  },
+  }
   
-  processNextTask() {
+  private processNextTask() {
     if (this.availableWorkers.length === 0 || this.taskQueue.size === 0) return;
     
     // Get next worker
@@ -110,9 +106,9 @@ export const workerPool = {
       type: 'TASK',
       payload: this.taskQueue.get(nextTaskId)
     });
-  },
+  }
   
-  terminate() {
+  public terminate() {
     for (const worker of this.workers) {
       worker.terminate();
     }
@@ -120,4 +116,4 @@ export const workerPool = {
     this.availableWorkers = [];
     this.taskQueue.clear();
   }
-};
+}

@@ -1,5 +1,5 @@
 // src/hooks/useProject.ts
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   addProject, 
@@ -17,7 +17,6 @@ import {
 import {
   selectProjects,
   selectActiveProject,
-  selectProjectById
 } from '../store/selectors/projectSelectors';
 
 export const useProject = () => {

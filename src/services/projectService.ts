@@ -8,7 +8,6 @@ import {
 
 export const projectService = {
   createProject(name: string, description?: string): Project {
-    const now = new Date().toISOString();
     const project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'> = {
       name,
       description,
