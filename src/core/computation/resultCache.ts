@@ -102,10 +102,14 @@ export class ResultCache {
         const request = store.put(entry);
         
         request.onsuccess = () => resolve();
-        request.onerror = () => reject(new Error('Failed to store in cache'));
+        request.onerror = (event) => {
+          console.error('Cache storage error:', event);
+          reject(new Error('Failed to store in cache'));
+        };
       });
     } catch (error) {
       console.error('Cache storage error:', error);
+      throw new Error(`Failed to store in cache: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   
@@ -152,6 +156,7 @@ export class ResultCache {
       });
     } catch (error) {
       console.error('Cache cleanup error:', error);
+      throw error;
     }
   }
   
@@ -172,6 +177,7 @@ export class ResultCache {
       });
     } catch (error) {
       console.error('Failed to clear cache:', error);
+      throw error;
     }
   }
   

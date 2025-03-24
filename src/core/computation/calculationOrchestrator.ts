@@ -1,5 +1,5 @@
-// src/services/calculation/calculationOrchestrator.ts
-import { TaskManager } from '../../core/computation/taskManager';
+// src/core/computation/calculationOrchestrator.ts
+import { TaskManager } from './taskManager';
 
 export class CalculationOrchestrator {
   private taskManager: TaskManager;
@@ -19,11 +19,36 @@ export class CalculationOrchestrator {
     return this.taskManager.executeHydraulicCalculation('WATER_SURFACE_PROFILE', parameters);
   }
   
-  public async calculateCulvertFlow(parameters: any): Promise<any> {
+  public async calculateCulvertFlow(parameters: {
+    culvertGeometry: any;
+    flowRate: number;
+    inletConfiguration: string;
+    outletConfiguration: string;
+    headwaterElevation?: number;
+    tailwaterElevation?: number;
+  }): Promise<any> {
     return this.taskManager.executeHydraulicCalculation('CULVERT_ANALYSIS', parameters);
   }
+
+  public async calculateBridgeHydraulics(parameters: {
+    bridgeGeometry: any;
+    channelGeometry: any;
+    flowRate: number;
+    manningsN: number;
+    upstreamElevation?: number;
+    downstreamElevation?: number;
+  }): Promise<any> {
+    return this.taskManager.executeHydraulicCalculation('BRIDGE_HYDRAULICS', parameters);
+  }
   
-  // Add other domain-specific calculation methods
+  public async calculateStormwaterSystem(parameters: {
+    networkTopology: any;
+    rainfallData: any;
+    catchmentProperties: any;
+    designStorm?: any;
+  }): Promise<any> {
+    return this.taskManager.executeHydraulicCalculation('STORMWATER_SYSTEM', parameters);
+  }
   
   public dispose() {
     this.taskManager.terminate();

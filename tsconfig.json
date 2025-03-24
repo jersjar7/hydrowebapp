@@ -2,6 +2,14 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./tsconfig.node.json" },
+    {
+      "compilerOptions": {
+        "paths": {
+          "@services/*": ["src/services/*"],
+          "@core/*": ["src/core/*"]
+        }
+      }
+    }
   ]
 }

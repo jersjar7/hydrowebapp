@@ -40,35 +40,43 @@ export class ComputationScheduler {
   }
   
   private async executeTaskWhenReady<T>(task: ComputationTask): Promise<T> {
-    // Wait for dependencies if any
-    if (task.dependencies && task.dependencies.length > 0) {
-      const dependencyPromises = task.dependencies.map(depId => {
-        const promise = this.taskPromises.get(depId);
-        if (!promise) {
-          throw new Error(`Dependency task ${depId} not found`);
-        }
-        return promise;
-      });
+    try {
+      // Wait for dependencies if any
+      if (task.dependencies && task.dependencies.length > 0) {
+        const dependencyPromises = task.dependencies.map(depId => {
+          const promise = this.taskPromises.get(depId);
+          if (!promise) {
+            throw new Error(`Dependency task ${depId} not found`);
+          }
+          return promise;
+        });
+        
+        await Promise.all(dependencyPromises);
+      }
       
-      await Promise.all(dependencyPromises);
+      // Execute the task
+      const result = await this.workerPool.executeTask<T>(
+        task.type,
+        task.payload,
+        task.priority
+      );
+      
+      // Store the result
+      this.results.set(task.id, {
+        taskId: task.id,
+        data: result,
+        timestamp: Date.now()
+      });
+      this.completedTasks.add(task.id);
+      
+      return result;
+    } catch (error) {
+      // Remove the task from pending tasks
+      this.tasks.delete(task.id);
+      
+      // Propagate the error
+      throw error;
     }
-    
-    // Execute the task
-    const result = await this.workerPool.executeTask<T>(
-      task.type,
-      task.payload,
-      task.priority
-    );
-    
-    // Store the result
-    this.results.set(task.id, {
-      taskId: task.id,
-      data: result,
-      timestamp: Date.now()
-    });
-    this.completedTasks.add(task.id);
-    
-    return result;
   }
   
   public getTaskResult<T>(taskId: string): T | undefined {
