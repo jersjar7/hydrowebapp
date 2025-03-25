@@ -1,8 +1,18 @@
 // src/services/storage/index.ts
-export * from './storageInterface';
-export * from './indexedDBService';
+/**
+ * Storage services for persistent data management
+ */
 
-import { IndexedDBService } from './indexedDBService';
-
-// Create and export a default instance
-export const storageService = new IndexedDBService();
+// Export types and interfaces
+export type {
+    StorageService,
+    StorageOptions,
+    StorageGetResult
+  } from './storageInterface';
+  
+  // Export classes and implementations
+  export { IndexedDBService } from './indexedDBService';
+  
+  // Create and export default instance
+  import { IndexedDBService } from './indexedDBService';
+  export const storageService = new IndexedDBService();
